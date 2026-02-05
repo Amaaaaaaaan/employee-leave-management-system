@@ -1,0 +1,110 @@
+<%- include('./partials/header', { user: user, title: 'Leave Calendar' }) %>
+
+<style>
+  .container { 
+    padding: 24px; 
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .event { 
+    background: white; 
+    padding: 12px; 
+    border-radius: 8px; 
+    margin-bottom: 10px; 
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06); 
+  }
+
+  .event small { 
+    color: #666; 
+  }
+
+  .leave-event {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+    margin-bottom: 10px;
+    transition: 0.3s;
+  }
+
+  .leave-event:hover {
+    transform: translateY(-3px);
+  }
+
+  .leave-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+  }
+
+  .user-name {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .dot {
+    color: #999;
+  }
+
+  .leave-type {
+    background: #4e73df;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  .leave-dates {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #666;
+  }
+
+  .arrow {
+    margin: 0 6px;
+    color: #aaa;
+  }
+
+  .no-data {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    color: #777;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+</style>
+
+<div class="container">
+  <h2>Approved Leaves</h2>
+
+    <% if (events.length === 0) { %>
+      <div class="no-data">No approved leaves to show.</div>
+    <% } %>
+
+    <% events.forEach(ev => { %>
+      <div class="event">
+        <div class="leave-event">
+  <div class="leave-top">
+    <span class="user-name"><%= ev.username %></span>
+    <span class="dot">•</span>
+    <span class="leave-type"><%= ev.type %></span>
+  </div>
+
+  <div class="leave-dates">
+    <span><%= ev.start_date %></span>
+    <span class="arrow">→</span>
+    <span><%= ev.end_date %></span>
+  </div>
+</div>
+
+      </div>
+    <% }) %>
+  </div>
+
+<%- include('./partials/footer') %>

@@ -1,0 +1,162 @@
+<%- include('../partials/header', { user: user, title: 'Leave Requests' }) %>
+
+<style>
+  .container {
+    padding: 40px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .leave-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .leave-info {
+    font-size: 15px;
+  }
+
+  .status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .pending { 
+    background: #f6c23e; 
+    color: white; 
+  }
+  
+  .approved { 
+    background: #1cc88a; 
+    color: white; 
+  }
+  
+  .rejected { 
+    background: #e74a3b; 
+    color: white; 
+  }
+
+  .actions form {
+    display: inline;
+  }
+
+  .actions button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 13px;
+    transition: 0.3s;
+  }
+
+  .approve-btn {
+    background: #1cc88a;
+    color: white;
+  }
+
+  .approve-btn:hover {
+    background: #17a673;
+  }
+
+  .reject-btn {
+    background: #e74a3b;
+    color: white;
+  }
+
+  .reject-btn:hover {
+    background: #c0392b;
+  }
+
+  .empty {
+    text-align: center;
+    margin-top: 50px;
+    color: #888;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .alert {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+
+  .alert-success {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .alert-error {
+    background: #f8d7da;
+    color: #721c24;
+  }
+</style>
+
+<div class="container">
+  <h1><%= user && user.role === 'manager' ? 'Leave Requests' : 'My Leaves' %></h1>
+
+    <% if (message) { %>
+      <div class="alert alert-success"><%= message %></div>
+    <% } %>
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <% if (leaves.length === 0) { %>
+      <div class="empty">No leave requests found.</div>
+    <% } %>
+
+    <% leaves.forEach(l => { %>
+      <div class="leave-card">
+        <div class="leave-info">
+          <strong><%= l.type %></strong>
+          <% if (user && user.role === 'manager') { %>
+            <div><small>By: <%= l.username %></small></div>
+          <% } %>
+          <br>
+          <small><%= l.start_date %> to <%= l.end_date %></small>
+
+          <% if (l.manager_comment) { %>
+            <div style="margin-top:8px;"><small><strong>Manager comment:</strong> <%= l.manager_comment %></small></div>
+          <% } %>
+        </div>
+
+        <div>
+          <span class="status <%= l.status %>">
+            <%= l.status %>
+          </span>
+
+          <% if (user && user.role === 'manager' && l.status === 'pending') { %>
+            <div class="actions">
+              <form method="post" action="/leave/<%= l.id %>/approve">
+                <input type="text" name="comment" placeholder="Comment (optional)" />
+                <button class="approve-btn">Approve</button>
+              </form>
+              <form method="post" action="/leave/<%= l.id %>/reject">
+                <input type="text" name="comment" placeholder="Comment (optional)" />
+                <button class="reject-btn">Reject</button>
+              </form>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+
+  </div>
+
+<%- include('../partials/footer') %>

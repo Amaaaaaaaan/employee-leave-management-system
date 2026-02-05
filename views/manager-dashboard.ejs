@@ -1,0 +1,181 @@
+<%- include('./partials/header', { user: user, title: 'Manager Dashboard' }) %>
+
+<style>
+  .container {
+    padding: 40px;
+  }
+
+  .welcome {
+    font-size: 18px;
+    margin-bottom: 25px;
+    color: #333;
+  }
+
+  .card-container {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    min-width: 220px;
+    transition: 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+  }
+
+  .card a {
+    text-decoration: none;
+    color: #4e73df;
+    font-weight: bold;
+  }
+
+  .pending-list {
+    margin-top: 15px;
+  }
+
+  .pending-item {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+  }
+
+  .pending-item small {
+    color: #777;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .actions input[type=text] {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 13px;
+  }
+
+  .approve-btn {
+    background: #1cc88a;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .approve-btn:hover {
+    background: #17a673;
+  }
+
+  .reject-btn {
+    background: #e74a3b;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .reject-btn:hover {
+    background: #c0392b;
+  }
+
+  h3 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .no-data {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    color: #777;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+</style>
+
+<div class="container">
+  <div class="welcome">
+    Welcome, <strong><%= user.username %></strong>
+  </div>
+
+    <div class="card-container">
+      <div class="card">
+        <strong>Pending Requests</strong>
+        <div style="font-size:28px;"><%= pendingCount %></div>
+        <div style="margin-top:8px;">
+          <a href="/leave">View All Requests</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <strong>Quick Actions</strong>
+        <div style="margin-top:8px;">
+          <a href="/leave">Open Leave Management</a>
+        </div>
+        <div style="margin-top:8px;">
+          <a href="/leave/calendar">View Calendar</a>
+        </div>
+      </div>
+    </div>
+
+    <h3>Recent Pending Requests</h3>
+
+    <div class="pending-list">
+      <% if (pending.length === 0) { %>
+        <div class="no-data">No pending requests.</div>
+      <% } %>
+
+      <% pending.slice(0,5).forEach(l => { %>
+        <div class="pending-item">
+          <div>
+            <div>
+              <strong><%= l.type %></strong>
+              &middot;
+              <small><%= l.start_date %> → <%= l.end_date %></small>
+            </div>
+            <div><small>By: <%= l.username %></small></div>
+          </div>
+
+          <div class="actions">
+            <form method="post" action="/leave/<%= l.id %>/approve">
+              <input type="text" name="comment" placeholder="Comment (optional)" />
+              <button class="approve-btn" type="submit">Approve</button>
+            </form>
+
+            <form method="post" action="/leave/<%= l.id %>/reject">
+              <input type="text" name="comment" placeholder="Comment (optional)" />
+              <button class="reject-btn" type="submit">Reject</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+
+<%- include('./partials/footer') %>
