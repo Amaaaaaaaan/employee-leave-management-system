@@ -1,0 +1,71 @@
+<%- include('./partials/header', { user: user, title: 'Dashboard' }) %>
+
+<style>
+  .container {
+    padding: 40px;
+    text-align: center;
+  }
+
+  .welcome {
+    margin-bottom: 30px;
+    font-size: 22px;
+    color: #333;
+  }
+
+  .card-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .card {
+    background: white;
+    padding: 25px;
+    width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card a {
+    text-decoration: none;
+    color: #4e73df;
+    font-weight: bold;
+    font-size: 16px;
+  }
+</style>
+
+<div class="container">
+  <div class="welcome">
+    Welcome, <strong><%= user ? user.username : 'Guest' %></strong>
+  </div>
+
+    <% if (balances) { %>
+      <div style="text-align:left; margin-bottom:18px; max-width:560px; margin-left:auto; margin-right:auto;">
+        <strong>Your Balances</strong>
+        <div>Vacation: <%= balances.vacation || 0 %> days</div>
+        <div>Sick: <%= balances.sick || 0 %> days</div>
+      </div>
+    <% } %>
+
+    <div class="card-container">
+      <div class="card">
+        <a href="/leave">My Leaves</a>
+      </div>
+
+      <div class="card">
+        <a href="/leave/new">Request Leave</a>
+      </div>
+
+      <div class="card">
+        <a href="/leave/calendar">Calendar</a>
+      </div>
+    </div>
+  </div>
+
+<%- include('./partials/footer') %>

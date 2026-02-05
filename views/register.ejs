@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Employee Management System</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #36b9cc, #4e73df);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
+    }
+
+    .register-container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .register-card {
+      background: white;
+      padding: 50px;
+      width: 400px;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #4e73df;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .register-card h1 {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 20px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    .register-card input,
+    .register-card select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 15px 0;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+      font-family: inherit;
+    }
+
+    .register-card input:focus,
+    .register-card select:focus {
+      border-color: #4e73df;
+      box-shadow: 0 0 8px rgba(78, 115, 223, 0.2);
+    }
+
+    .register-card button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #1cc88a, #36b9cc);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .register-card button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(28, 200, 138, 0.3);
+    }
+
+    .error {
+      color: #e74a3b;
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #fdeaea;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 5px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .footer-link {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .footer-link a {
+      color: #4e73df;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .footer-link a:hover {
+      color: #1cc88a;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .register-card {
+        width: 90%;
+        padding: 30px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .register-card h1 {
+        font-size: 18px;
+      }
+    }
+  </style>
+
+</head>
+<body>
+
+  <div class="register-container">
+    <div class="register-card">
+      <div class="logo">EMS</div>
+      <h1>Create Account</h1>
+      <p class="subtitle">Join our Employee Management System</p>
+
+      <% if (error) { %>
+        <p class="error"><%= error %></p>
+      <% } %>
+
+      <form method="post" action="/register">
+        <div class="form-group">
+          <input name="username" placeholder="Username" required />
+        </div>
+
+        <div class="form-group">
+          <input name="password" type="password" placeholder="Password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="role">Select Your Role</label>
+          <select name="role" id="role" required>
+            <option value="employee" selected>Employee</option>
+            <option value="manager">Manager</option>
+          </select>
+        </div>
+
+        <button class="btn" type="submit">Register</button>
+      </form>
+
+      <div class="footer-link">
+        <p>Already have an account? <a href="/login">Login here</a></p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
