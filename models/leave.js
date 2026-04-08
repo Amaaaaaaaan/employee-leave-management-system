@@ -67,17 +67,17 @@ async function approveLeave(id, manager_comment = null) {
     const days = Math.round((end - start) / msPerDay) + 1;
     if (days <= 0) throw new Error('INVALID_DATES');
 
-    // lock balance row
+  
     const [balRows] = await conn.execute('SELECT * FROM leave_balances WHERE user_id = ? AND type = ? FOR UPDATE', [leave.user_id, leave.type]);
     const bal = balRows[0];
     if (!bal || Number(bal.balance) < days) {
       throw new Error('INSUFFICIENT_BALANCE');
     }
 
-    // deduct
+ 
     await conn.execute('UPDATE leave_balances SET balance = balance - ? WHERE id = ?', [days, bal.id]);
 
-    // update leave status and mark as deducted
+
     await conn.execute('UPDATE leaves SET status = ?, manager_comment = ?, balance_deducted = 1 WHERE id = ?', ['approved', manager_comment, id]);
 
     await conn.commit();

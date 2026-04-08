@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+
 require('dotenv').config();
 const pool = require('../config/db');
-// simple arg parsing: default dry-run; pass --apply to actually perform deductions
+
 const args = process.argv.slice(2);
 const dryRun = !args.includes('--apply');
 (async () => {

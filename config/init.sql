@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS leaves (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Track per-user balances for different leave types
+
 CREATE TABLE IF NOT EXISTS leave_balances (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,

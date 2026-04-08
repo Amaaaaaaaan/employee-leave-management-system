@@ -44,13 +44,12 @@ router.post('/new', requireAuth, async (req, res) => {
       const [rows] = await pool.execute('SELECT type, balance FROM leave_balances WHERE user_id = ?', [req.user.id]);
       const balances = rows.reduce((acc, r) => { acc[r.type] = Number(r.balance); return acc; }, {});
       return res.render('leave/new', { user: req.user, error: 'Insufficient leave balance for selected type/dates', balances });
-    }
-
+    } 
     await createLeave({ user_id: req.user.id, type, start_date, end_date, reason });
     res.redirect('/leave');
   } catch (err) {
     console.error(err);
-    res.render('leave/new', { user: req.user, error: 'Could not create leave' });
+    res.status(500).render('leave/new', { user: req.user, error: 'Failed to create leave request', balances: {} });
   }
 });
 
@@ -92,6 +91,7 @@ router.post('/:id/reject', requireManager, async (req, res) => {
     res.redirect('/leave?error=Could+not+reject');
   }
 });
+
 
 
 router.get('/calendar', requireAuth, async (req, res) => {

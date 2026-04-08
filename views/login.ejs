@@ -34,6 +34,12 @@
       border-radius: 50%;
       animation: float 6s ease-in-out infinite;
     }
+    #show{
+      background: #000;
+      color: #fff;
+      padding: 5px 10px;
+      border: #000;
+    }
 
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
@@ -168,6 +174,7 @@
       <form method="post" action="/login">
         <input name="username" placeholder="Username" required />
         <input name="password" type="password" placeholder="Password" required />
+        <h1 id="show">show</h1>  
         <button type="submit">Login</button>
       </form>
 
@@ -176,6 +183,20 @@
       </div>
     </div>
   </div>
+
+  <script>
+    const passwordInput = document.querySelector('input[name="password"]');
+    const toggleBtn = document.getElementById('show');
+    toggleBtn.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleBtn.textContent = 'hide';
+      } else {
+        passwordInput.type = 'password';
+        toggleBtn.textContent = 'show';
+      }
+    });
+  </script>
 
 </body>
 </html>
